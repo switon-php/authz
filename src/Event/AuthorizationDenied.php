@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Switon\Authorizing\Event;
 
 use JsonSerializable;
+use Switon\Core\SenderAwareInterface;
 use Switon\Eventing\Attribute\EventLevel;
 use Switon\Eventing\Severity;
+use Switon\Authorizing\AuthorizationInterface;
 
 /**
  * Event emitted when authorization enforcement denies access.
@@ -17,7 +19,7 @@ use Switon\Eventing\Severity;
  * @see \Switon\Authorizing\Event\AuthorizationGranted
  */
 #[EventLevel(Severity::INFO)]
-class AuthorizationDenied implements JsonSerializable
+class AuthorizationDenied implements JsonSerializable, SenderAwareInterface
 {
     /**
      * @param string $operation Permission code (for example <code>admin::create-user</code> or <code>rbac.role::index</code>) or handler reference
@@ -26,10 +28,16 @@ class AuthorizationDenied implements JsonSerializable
      * @param array<string> $roles Roles used for the decision
      */
     public function __construct(
+        public AuthorizationInterface $sender,
         public string $operation,
         public int    $status,
         public array  $roles,
     ) {
+    }
+
+    public function getSender(): \Switon\Authorizing\AuthorizationInterface
+    {
+        return $this->sender;
     }
 
     /** @return array<string, mixed> */

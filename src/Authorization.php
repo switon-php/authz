@@ -213,15 +213,15 @@ class Authorization implements AuthorizationInterface, ContextAware
         $roles = $roles ?? $this->identity->getRoles();
 
         if ($this->can($operation, $roles)) {
-            $this->eventDispatcher->dispatch(new AuthorizationGranted($operation, $roles));
+            $this->eventDispatcher->dispatch(new AuthorizationGranted($this, $operation, $roles));
             return;
         }
 
         if ($roles === []) {
-            $this->eventDispatcher->dispatch(new AuthorizationDenied($operation, 401, $roles));
+            $this->eventDispatcher->dispatch(new AuthorizationDenied($this, $operation, 401, $roles));
             UnauthorizedException::raise('Authentication required for {operation}', ['operation' => $operation]);
         } else {
-            $this->eventDispatcher->dispatch(new AuthorizationDenied($operation, 403, $roles));
+            $this->eventDispatcher->dispatch(new AuthorizationDenied($this, $operation, 403, $roles));
             ForbiddenException::raise('Access denied for {operation}', ['operation' => $operation]);
         }
     }

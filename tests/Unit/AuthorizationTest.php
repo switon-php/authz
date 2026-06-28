@@ -1313,7 +1313,7 @@ class AuthorizationTest extends TestCase
         ]);
 
         $method = new ReflectionMethod(TestClasses\UserController::class, 'indexAction');
-        $event = new RequestAuthorizing($method);
+        $event = new RequestAuthorizing($this->createMock(\Switon\Http\RequestHandlerInterface::class), $method);
 
         // Act / Assert - should not throw
         $authorization->onAuthorizing($event);
@@ -1456,7 +1456,7 @@ class AuthorizationTest extends TestCase
         ]);
 
         $method = new ReflectionMethod(TestClasses\UserController::class, 'indexAction');
-        $event = new RequestAuthorizing($method);
+        $event = new RequestAuthorizing($this->createMock(\Switon\Http\RequestHandlerInterface::class), $method);
 
         $this->expectException(UnauthorizedException::class);
 
@@ -1513,7 +1513,7 @@ class AuthorizationTest extends TestCase
         ]);
 
         $method = new ReflectionMethod(TestClasses\PlainController::class, 'viewAction');
-        $event = new RequestAuthorizing($method);
+        $event = new RequestAuthorizing($this->createMock(\Switon\Http\RequestHandlerInterface::class), $method);
 
         $this->expectException(ForbiddenException::class);
 
@@ -1743,7 +1743,7 @@ class AuthorizationTest extends TestCase
         ]);
 
         $method = new ReflectionMethod(TestClasses\UserController::class, 'publicAction');
-        $event = new RequestAuthorizing($method);
+        $event = new RequestAuthorizing($this->createMock(\Switon\Http\RequestHandlerInterface::class), $method);
 
         // Act / Assert - anonymous method should pass for guest
         $authorization->onAuthorizing($event);
@@ -1809,7 +1809,7 @@ class AuthorizationTest extends TestCase
         ]);
 
         $method = new ReflectionMethod(TestClasses\PlainController::class, 'viewAction');
-        $event = new RequestAuthorizing($method);
+        $event = new RequestAuthorizing($this->createMock(\Switon\Http\RequestHandlerInterface::class), $method);
 
         $this->expectException(ForbiddenException::class);
         $this->expectExceptionMessage('Access denied');
