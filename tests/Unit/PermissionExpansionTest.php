@@ -6,7 +6,7 @@ namespace Switon\Authorizing\Tests\Unit;
 
 use Switon\Authorizing\Permissions;
 use Switon\Core\Exception\RuntimeException;
-use Switon\Authorizing\Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class PermissionExpansionTest extends TestCase
 {

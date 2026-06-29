@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Switon\Authorizing\Tests\Unit;
 
 use Switon\Authorizing\Permissions;
-use Switon\Authorizing\Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class PermissionExplainerTest extends TestCase
 {

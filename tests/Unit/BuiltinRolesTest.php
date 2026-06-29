@@ -6,7 +6,7 @@ namespace Switon\Authorizing\Tests\Unit;
 
 use Switon\Authorizing\Attribute\Authorize;
 use Switon\Authorizing\BuiltinRoles;
-use Switon\Authorizing\Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class BuiltinRolesTest extends TestCase
 {

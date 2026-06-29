@@ -6,7 +6,7 @@ namespace Switon\Authorizing\Tests\Unit;
 
 use ArrayObject;
 use Switon\Authorizing\Permissions;
-use Switon\Authorizing\Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class PermissionFlattenerTest extends TestCase
 {
