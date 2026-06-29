@@ -56,6 +56,7 @@ class Authorization implements AuthorizationInterface, ContextAware
     #[Autowired] protected LookupInterface $lookup;
     #[Autowired] protected HandlerIdInterface $handlerId;
     #[Autowired] protected EventDispatcherInterface $eventDispatcher;
+
     /** @var array<int, VoterInterface> Decision voters checked before default authorization logic. */
     #[Autowired(instances: true)] protected array $voters = [];
 
