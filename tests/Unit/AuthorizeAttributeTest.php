@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Switon\Authorizing\Tests\Unit;
 
 use Switon\Authorizing\Attribute\Authorize;
-use Switon\Core\Exception\InvalidArgumentException;
 use Switon\Authorizing\Tests\TestCase;
 
 class AuthorizeAttributeTest extends TestCase
@@ -55,20 +54,31 @@ class AuthorizeAttributeTest extends TestCase
         $this->assertTrue((new Authorize(Authorize::AUTHENTICATED, assignable: true))->hasExplicitAssignable());
     }
 
-    public function testAuthorizeAttributeRejectsAnonymousWhenCombinedWithOtherRoles(): void
+    public function testAuthorizeAttributeTreatsEmptyPermissionReferenceAsEmptyString(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('anonymous must be used as a standalone role in #[Authorize].');
+        $attribute = new Authorize('@');
 
-        new Authorize([Authorize::ANONYMOUS, 'editor']);
+        $this->assertSame('', $attribute->getReference());
+        $this->assertSame([], $attribute->getRoles());
     }
 
-    public function testAuthorizeAttributeRejectsAuthenticatedWhenCombinedWithOtherRoles(): void
+    public function testAuthorizeAttributeAllowsIdentityStateRolesCombinedWithOthers(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('authenticated must be used as a standalone role in #[Authorize].');
+        $anonymousMixed = new Authorize([Authorize::ANONYMOUS, 'editor']);
+        $this->assertSame([Authorize::ANONYMOUS, 'editor'], $anonymousMixed->getRoles());
+        $this->assertFalse($anonymousMixed->isAssignable());
 
-        new Authorize([Authorize::AUTHENTICATED, Authorize::SUPERUSER]);
+        $authenticatedMixed = new Authorize([Authorize::AUTHENTICATED, Authorize::SUPERUSER]);
+        $this->assertSame([Authorize::AUTHENTICATED, Authorize::SUPERUSER], $authenticatedMixed->getRoles());
+        $this->assertFalse($authenticatedMixed->isAssignable());
+    }
+
+    public function testAuthorizeAttributeIgnoresPermissionReferenceInsideRoleArray(): void
+    {
+        $attribute = new Authorize(['editor', '@edit']);
+
+        $this->assertSame(['editor'], $attribute->getRoles());
+        $this->assertNull($attribute->getReference());
     }
 
     public function testAuthorizeAttributeAcceptsSinglePermissionReferenceString(): void
@@ -77,23 +87,5 @@ class AuthorizeAttributeTest extends TestCase
 
         $this->assertSame([], $attribute->getRoles());
         $this->assertSame('edit', $attribute->getReference());
-    }
-
-    public function testAuthorizeAttributeRejectsEmptyPermissionReference(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Authorize permission reference must not be empty.');
-
-        new Authorize('@');
-    }
-
-    public function testAuthorizeAttributeRejectsPermissionReferenceInsideRoleArray(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Authorize permission reference must be passed as a single string, not inside a role array.'
-        );
-
-        new Authorize(['editor', '@edit']);
     }
 }

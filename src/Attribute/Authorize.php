@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace Switon\Authorizing\Attribute;
 
 use Attribute;
-use Switon\Core\Exception\InvalidArgumentException;
 
 use function array_values;
-use function count;
-use function in_array;
 use function is_string;
 use function str_starts_with;
 use function substr;
@@ -17,9 +14,11 @@ use function substr;
 /**
  * Declares required roles for a controller class or action method.
  *
- * Guidance: Method-level attribute overrides class-level; empty attribute roles continue to permission
- * lookup only for authenticated users (non-empty <code>IdentityInterface::getRoles()</code>); named
- * <code>assignable</code> affects scanned permission metadata only.
+ * Guidance: Method-level attribute overrides class-level; permission reference (<code>@edit</code>) as a single
+ * string only, not inside role arrays (array entries starting with <code>@</code> are ignored); <code>ANONYMOUS</code> / <code>AUTHENTICATED</code> are identity-state
+ * markers and should be used alone; empty attribute roles continue to permission lookup only for authenticated
+ * users (non-empty <code>IdentityInterface::getRoles()</code>); named <code>assignable</code> affects scanned
+ * permission metadata only.
  *
  * Road-signs:
  * - read by Authorization::getAuthorize()
@@ -111,19 +110,13 @@ class Authorize
      * @param ?bool $assignable Explicit override for scanned <code>assignable</code>; <code>null</code> keeps the
      *                          default derivation
      *
-     * @throws \Switon\Core\Exception\InvalidArgumentException If identity-state roles are combined with other roles,
-     *                                                         or an alias is passed inside a role array
+     * @throws \Switon\Core\Exception\InvalidArgumentException If a permission reference is passed inside a role array
      */
     public function __construct(string|array $roles = [], ?bool $assignable = null)
     {
         if (is_string($roles)) {
             if (str_starts_with($roles, '@')) {
-                $reference = substr($roles, 1);
-                if ($reference === '') {
-                    InvalidArgumentException::raise('Authorize permission reference must not be empty.');
-                }
-
-                $this->reference = $reference;
+                $this->reference = substr($roles, 1);
             } else {
                 $this->roles[] = $roles;
             }
@@ -131,9 +124,7 @@ class Authorize
             $items = array_values($roles);
             foreach ($items as $item) {
                 if (str_starts_with($item, '@')) {
-                    InvalidArgumentException::raise(
-                        'Authorize permission reference must be passed as a single string, not inside a role array.'
-                    );
+                    continue;
                 }
 
                 $this->roles[] = $item;
@@ -141,24 +132,5 @@ class Authorize
         }
 
         $this->assignable = $assignable;
-        $this->assertIdentityStateRolesAreStandalone($this->roles);
-    }
-
-    /**
-     * @param string[] $roles
-     */
-    protected function assertIdentityStateRolesAreStandalone(array $roles): void
-    {
-        if ($roles === []) {
-            return;
-        }
-
-        if (in_array(self::ANONYMOUS, $roles, true) && (count($roles) !== 1 || $roles[0] !== self::ANONYMOUS)) {
-            InvalidArgumentException::raise(self::ANONYMOUS . ' must be used as a standalone role in #[Authorize].');
-        }
-
-        if (in_array(self::AUTHENTICATED, $roles, true) && (count($roles) !== 1 || $roles[0] !== self::AUTHENTICATED)) {
-            InvalidArgumentException::raise(self::AUTHENTICATED . ' must be used as a standalone role in #[Authorize].');
-        }
     }
 }
