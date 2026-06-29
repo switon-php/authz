@@ -20,12 +20,12 @@ use Switon\Authorizing\Tests\TestCase;
 #[AllowMockObjectsWithoutExpectations]
 class VoterTest extends TestCase
 {
-    private int $voterIdSequence = 0;
+    protected int $voterIdSequence = 0;
 
     /**
      * @return list<string>
      */
-    private function registerVoters(object ...$voters): array
+    protected function registerVoters(object ...$voters): array
     {
         $ids = [];
 
