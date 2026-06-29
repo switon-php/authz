@@ -783,7 +783,7 @@ class AuthorizationTest extends TestCase
 
         $request = $this->createMock(RequestInterface::class);
         $request->method('verb')->willReturn('GET');
-        $request->method('url')->willReturn('/protected');
+        $request->method('url')->willReturn('/private');
         $permissionsLookup = $this->createMock(LookupInterface::class);
         $permissionsLookup->method('getPermissions')->willReturn('');
 
@@ -1107,7 +1107,7 @@ class AuthorizationTest extends TestCase
 
         $request = $this->createMock(RequestInterface::class);
         $request->method('verb')->willReturn('GET');
-        $request->method('url')->willReturn('/protected');
+        $request->method('url')->willReturn('/private');
         $permissionsLookup = $this->createMock(LookupInterface::class);
         $permissionsLookup->method('getPermissions')->willReturn('');
 
@@ -1141,7 +1141,7 @@ class AuthorizationTest extends TestCase
 
         $request = $this->createMock(RequestInterface::class);
         $request->method('verb')->willReturn('GET');
-        $request->method('url')->willReturn('/protected');
+        $request->method('url')->willReturn('/private');
         $permissionsLookup = $this->createMock(LookupInterface::class);
         $permissionsLookup->method('getPermissions')->willReturn('');
 
@@ -1185,7 +1185,7 @@ class AuthorizationTest extends TestCase
 
         $request = $this->createMock(RequestInterface::class);
         $request->method('verb')->willReturn('GET');
-        $request->method('url')->willReturn('/protected');
+        $request->method('url')->willReturn('/private');
         $permissionsLookup = $this->createMock(LookupInterface::class);
         $permissionsLookup->method('getPermissions')->willReturn('');
 
@@ -1218,7 +1218,7 @@ class AuthorizationTest extends TestCase
 
         $request = $this->createMock(RequestInterface::class);
         $request->method('verb')->willReturn('GET');
-        $request->method('url')->willReturn('/protected');
+        $request->method('url')->willReturn('/private');
         $permissionsLookup = $this->createMock(LookupInterface::class);
         $permissionsLookup->method('getPermissions')->willReturn('');
 
@@ -1251,7 +1251,7 @@ class AuthorizationTest extends TestCase
 
         $request = $this->createMock(RequestInterface::class);
         $request->method('verb')->willReturn('GET');
-        $request->method('url')->willReturn('/protected');
+        $request->method('url')->willReturn('/private');
         $permissionsLookup = $this->createMock(LookupInterface::class);
         $permissionsLookup->method('getPermissions')->willReturn('');
 
