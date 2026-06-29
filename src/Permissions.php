@@ -301,7 +301,7 @@ class Permissions implements PermissionsInterface
      *
      * @return array<string, array{roles: string[], reference: ?string, assignable: bool, assignable_explicit: bool, inherited: bool}>
      */
-    private function buildNormalizedRows(array $catalog): array
+    protected function buildNormalizedRows(array $catalog): array
     {
         $rows = [];
         foreach ($catalog as $controllerId => $entry) {
@@ -358,7 +358,7 @@ class Permissions implements PermissionsInterface
     /**
      * Normalizes one scanned permission reference into full <code>handler::suffix</code> form.
      */
-    private function normalizeReference(string $controllerId, mixed $reference): ?string
+    protected function normalizeReference(string $controllerId, mixed $reference): ?string
     {
         if (!is_string($reference) || $reference === '') {
             return null;
@@ -381,7 +381,7 @@ class Permissions implements PermissionsInterface
     /**
      * @param array<string, array{reference: ?string}> $rows
      */
-    private function assertReferenceTargetsExist(array $rows): void
+    protected function assertReferenceTargetsExist(array $rows): void
     {
         foreach ($rows as $permissionCode => $row) {
             $reference = $row['reference'];
@@ -399,7 +399,7 @@ class Permissions implements PermissionsInterface
     /**
      * @param array<string, array{reference: ?string}> $rows
      */
-    private function assertNoReferenceCycles(array $rows): void
+    protected function assertNoReferenceCycles(array $rows): void
     {
         $visited = [];
         $visiting = [];
@@ -448,7 +448,7 @@ class Permissions implements PermissionsInterface
      *
      * @return array<int, string>
      */
-    private function expandReferencedPermissions(array $rows, array $codes): array
+    protected function expandReferencedPermissions(array $rows, array $codes): array
     {
         $granted = [];
         foreach ($codes as $code) {
@@ -483,7 +483,7 @@ class Permissions implements PermissionsInterface
      *
      * @return array<int, string>
      */
-    private function flattenSourceCodes(array $sources): array
+    protected function flattenSourceCodes(array $sources): array
     {
         $codes = [];
         foreach ($sources as $handlerId => $group) {
