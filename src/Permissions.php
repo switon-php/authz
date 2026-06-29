@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Switon\Authorizing;
 
-use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
+use Switon\Core\Attributes;
 use Switon\Core\Attribute\Autowired;
 use Switon\Core\Exception\RuntimeException;
 use Switon\Routing\Attribute\MappingInterface;
@@ -50,7 +50,7 @@ class Permissions implements PermissionsInterface
         $byPrefix = [];
         foreach ($this->controllerScanner->getControllers() as $controller) {
             $rClass = new ReflectionClass($controller);
-            $controllerAuthorize = ($rClass->getAttributes(Attribute\Authorize::class, ReflectionAttribute::IS_INSTANCEOF)[0] ?? null)?->newInstance();
+            $controllerAuthorize = Attributes::first($rClass, Attribute\Authorize::class);
 
             if ($controllerAuthorize !== null) {
                 $fullHandlerId = $this->handlerId->getId($controller, '*');
@@ -76,11 +76,11 @@ class Permissions implements PermissionsInterface
             }
 
             foreach ($rClass->getMethods(ReflectionMethod::IS_PUBLIC) as $rMethod) {
-                if ($rMethod->getAttributes(MappingInterface::class, ReflectionAttribute::IS_INSTANCEOF) === []) {
+                if (!Attributes::has($rMethod, MappingInterface::class)) {
                     continue;
                 }
 
-                $authorize = ($rMethod->getAttributes(Attribute\Authorize::class, ReflectionAttribute::IS_INSTANCEOF)[0] ?? null)?->newInstance();
+                $authorize = Attributes::first($rMethod, Attribute\Authorize::class);
                 $fullHandlerId = $this->handlerId->getId($controller, $rMethod->getName());
                 $parts = explode('::', $fullHandlerId, 2);
                 $controllerId = $parts[0];

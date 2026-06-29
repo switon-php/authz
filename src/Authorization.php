@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Switon\Authorizing;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use ReflectionAttribute;
 use ReflectionMethod;
 use Switon\Authorizing\Attribute\Authorize;
+use Switon\Core\Attributes;
 use Switon\Authorizing\Event\AuthorizationDenied;
 use Switon\Authorizing\Event\AuthorizationGranted;
 use Switon\Core\Attribute\Autowired;
@@ -98,8 +98,8 @@ class Authorization implements AuthorizationInterface, ContextAware
         $rMethod = new ReflectionMethod($controller, $action);
         $rClass = $rMethod->getDeclaringClass();
 
-        $classAuthorize = ($rClass->getAttributes(Authorize::class, ReflectionAttribute::IS_INSTANCEOF)[0] ?? null)?->newInstance();
-        $methodAuthorize = ($rMethod->getAttributes(Authorize::class, ReflectionAttribute::IS_INSTANCEOF)[0] ?? null)?->newInstance();
+        $classAuthorize = Attributes::first($rClass, Authorize::class);
+        $methodAuthorize = Attributes::first($rMethod, Authorize::class);
 
         if ($methodAuthorize === null) {
             return $classAuthorize;
