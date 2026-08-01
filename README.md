@@ -46,7 +46,7 @@ class UserController
 }
 ```
 
-Docs: https://docs.switon.dev/latest/authz
+Docs: https://github.com/switon-php/authz/blob/main/docs/README.md
 
 ## License
 

@@ -167,7 +167,9 @@ Voters are checked in order. `true` and `false` stop the chain; `null` lets the 
 
 ## Next {#next}
 
-- **Authorization:** [Add authorization](../../../docs/en/guides/add-authorization.md#add-authorization)
-- **Authentication:** [Add authentication](../../../docs/en/guides/add-authentication.md#add-authentication)
+- **Current identity and tenant:** [Principal Package](https://github.com/switon-php/principal/blob/main/docs/README.md)
+- **Token authentication:** [JWT Package](https://github.com/switon-php/jwt/blob/main/docs/README.md)
+- **Session authentication:** [Session Package](https://github.com/switon-php/session/blob/main/docs/README.md)
+- **HTTP authorization flow:** [HTTP Package](https://github.com/switon-php/http/blob/main/docs/README.md)
 - **FAQ:** [FAQ](faq.md#authorization-faq)
 - **Design:** [Design Rationale](design.md#design-rationale)

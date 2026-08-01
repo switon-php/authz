@@ -19,7 +19,7 @@
     "support": {
         "source": "https://github.com/switon-php/authz",
         "issues": "https://github.com/switon-php/authz/issues",
-        "docs": "https://docs.switon.dev/latest/authz"
+        "docs": "https://github.com/switon-php/authz/blob/main/docs/README.md"
     },
     "require": {
         "php": ">=8.3",
